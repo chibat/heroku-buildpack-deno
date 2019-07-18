@@ -18,7 +18,11 @@ curl -L https://github.com/denoland/deno/releases/download/v0.12.0/deno_linux_x6
 gzip -fd $HEROKU_DIR/deno.gz
 chmod 700 $HEROKU_DIR/deno
 
-export PATH="$HEROKU_DIR":$PATH
-export DENO_DIR=$CACHE_DIR
+PROFILE_PATH="$BUILD_DIR/.profile.d/deno.sh"
+mkdir -p $(dirname $PROFILE_PATH)
+echo 'export PATH="$HOME/.heroku:$PATH"' >> $PROFILE_PATH
+echo "export DENO_DIR=$CACHE_DIR" >> $PROFILE_PATH
+
+
 
 

@@ -11,17 +11,21 @@ echo $CACHE_DIR
 echo $ENV_DIR
 echo $BP_DIR
 
-HEROKU_DIR=$BUILD_DIR/.heroku
-mkdir -p $HEROKU_DIR
+HEROKU_BIN_DIR=$BUILD_DIR/.heroku/bin
+mkdir -p $HEROKU_BIN_DIR
 
-curl -L https://github.com/denoland/deno/releases/download/v0.12.0/deno_linux_x64.gz -o $HEROKU_DIR/deno.gz
-gzip -fd $HEROKU_DIR/deno.gz
-chmod 700 $HEROKU_DIR/deno
+curl -L https://github.com/denoland/deno/releases/download/v0.12.0/deno_linux_x64.gz -o $HEROKU_BIN_DIR/deno.gz
+gzip -fd $HEROKU_BIN_DIR/deno.gz
+chmod 700 $HEROKU_BIN_DIR/deno
 
 PROFILE_PATH="$BUILD_DIR/.profile.d/deno.sh"
 mkdir -p $(dirname $PROFILE_PATH)
-echo 'export PATH="$HOME/.heroku:$PATH"' >> $PROFILE_PATH
-echo "export DENO_DIR=$CACHE_DIR" >> $PROFILE_PATH
+echo 'export PATH="$HOME/.heroku/bin:$PATH"' >> $PROFILE_PATH
+echo 'export DENO_DIR="$HOME/.heroku/cache:' >> $PROFILE_PATH
+
+pwd
+ls -a
+
 
 
 

@@ -21,7 +21,7 @@ chmod 700 $HEROKU_BIN_DIR/deno
 PROFILE_PATH="$BUILD_DIR/.profile.d/deno.sh"
 mkdir -p $(dirname $PROFILE_PATH)
 echo 'export PATH="$HOME/.heroku/bin:$PATH"' >> $PROFILE_PATH
-echo 'export DENO_DIR="$HOME/.heroku/cache:' >> $PROFILE_PATH
+echo 'export DENO_DIR="$HOME/.heroku/cache"' >> $PROFILE_PATH
 
 pwd
 ls -a

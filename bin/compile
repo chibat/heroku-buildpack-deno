@@ -27,6 +27,7 @@ echo 'export DENO_DIR="$HOME/.heroku/cache"' >> $PROFILE_PATH
 pwd
 ls -la
 
+export DENO_DIR=$BUILD_DIR/.heroku/cache
 $HEROKU_BIN_DIR/deno fetch $BUILD_DIR/app.ts
 
 echo "end of compile"

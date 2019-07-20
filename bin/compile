@@ -3,30 +3,29 @@
 
 set -e
 
-DENO_VERSION=v0.12.0
+#DENO_VERSION=v0.12.0
 BUILD_DIR=${1:-.}
 HEROKU_DIR=$BUILD_DIR/.heroku
 BIN_DIR=$HEROKU_DIR/bin
 
-mkdir -p $BIN_DIR
-# mkdir -p $DENO_DIR
+# install deno
+export DENO_DIR=$BUILD_DIR/.heroku
+curl -fsSL https://deno.land/x/install/install.sh | sh
+# future
+#curl -fsSL https://deno.land/x/install/install.sh | sh -s $DENO_VERSION
 
-DENO=$BIN_DIR/deno
-DENO_GZ=$BIN_DIR/deno.gz
-curl -L https://github.com/denoland/deno/releases/download/$DENO_VERSION/deno_linux_x64.gz -o $DENO_GZ
-gzip -fd $DENO_GZ
-chmod 700 $DENO
-
+# set environment variables
 PROFILE_PATH="$BUILD_DIR/.profile.d/deno.sh"
 mkdir -p $(dirname $PROFILE_PATH)
 echo 'export PATH="$HOME/.heroku/bin:$PATH"' >> $PROFILE_PATH
 echo 'export DENO_DIR="$HOME/.heroku/cache"' >> $PROFILE_PATH
 
+# download dependencies
 FETCH_TS=$BUILD_DIR/fetch.ts
 if [ -f $FETCH_TS ]
 then
   export DENO_DIR=$BUILD_DIR/.heroku/cache
-  $DENO fetch $FETCH_TS
+  $BIN_DIR/deno fetch $FETCH_TS
 fi
 
 

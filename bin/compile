@@ -33,6 +33,7 @@ ls -la
 
 
 FETCH_TS=$BUILD_DIR/fetch.ts
+cat $FETCH_TS
 if [ -f $FETCH_TS ]
 then
   export DENO_DIR=$BUILD_DIR/.heroku/cache

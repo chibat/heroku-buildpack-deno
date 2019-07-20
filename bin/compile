@@ -4,45 +4,29 @@
 set -e
 
 DENO_VERSION=v0.12.0
-
 BUILD_DIR=${1:-.}
-CACHE_DIR=${2:-}
-ENV_DIR=${3:-}
-BP_DIR=$(cd "$(dirname "${0:-}")"; cd ..; pwd)
+HEROKU_DIR=$BUILD_DIR/.heroku
+BIN_DIR=$HEROKU_DIR/bin
 
-echo $BUILD_DIR
-echo $CACHE_DIR
-echo $ENV_DIR
-echo $BP_DIR
+mkdir -p $BIN_DIR
+# mkdir -p $DENO_DIR
 
-HEROKU_BIN_DIR=$BUILD_DIR/.heroku/bin
-mkdir -p $BUILD_DIR/.heroku/{bin,cache}
-
-curl -L https://github.com/denoland/deno/releases/download/$DENO_VERSION/deno_linux_x64.gz -o $HEROKU_BIN_DIR/deno.gz
-gzip -fd $HEROKU_BIN_DIR/deno.gz
-chmod 700 $HEROKU_BIN_DIR/deno
+DENO=$BIN_DIR/deno
+DENO_GZ=$BIN_DIR/deno.gz
+curl -L https://github.com/denoland/deno/releases/download/$DENO_VERSION/deno_linux_x64.gz -o $DENO_GZ
+gzip -fd $DENO_GZ
+chmod 700 $DENO
 
 PROFILE_PATH="$BUILD_DIR/.profile.d/deno.sh"
 mkdir -p $(dirname $PROFILE_PATH)
 echo 'export PATH="$HOME/.heroku/bin:$PATH"' >> $PROFILE_PATH
 echo 'export DENO_DIR="$HOME/.heroku/cache"' >> $PROFILE_PATH
 
-
-pwd
-ls -la
-
-
 FETCH_TS=$BUILD_DIR/fetch.ts
-cat $FETCH_TS
 if [ -f $FETCH_TS ]
 then
   export DENO_DIR=$BUILD_DIR/.heroku/cache
-  $HEROKU_BIN_DIR/deno fetch $FETCH_TS
+  $DENO fetch $FETCH_TS
 fi
-
-echo "end of compile"
-
-
-
 
 

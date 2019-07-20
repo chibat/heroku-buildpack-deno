@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 # bin/compile <build-dir> <cache-dir> <env-dir>
 
+set -e
+
+DENO_VERSION=v0.12.0
+
 BUILD_DIR=${1:-.}
 CACHE_DIR=${2:-}
 ENV_DIR=${3:-}
@@ -14,7 +18,7 @@ echo $BP_DIR
 HEROKU_BIN_DIR=$BUILD_DIR/.heroku/bin
 mkdir -p $BUILD_DIR/.heroku/{bin,cache}
 
-curl -L https://github.com/denoland/deno/releases/download/v0.12.0/deno_linux_x64.gz -o $HEROKU_BIN_DIR/deno.gz
+curl -L https://github.com/denoland/deno/releases/download/$DENO_VERSION/deno_linux_x64.gz -o $HEROKU_BIN_DIR/deno.gz
 gzip -fd $HEROKU_BIN_DIR/deno.gz
 chmod 700 $HEROKU_BIN_DIR/deno
 
@@ -27,8 +31,13 @@ echo 'export DENO_DIR="$HOME/.heroku/cache"' >> $PROFILE_PATH
 pwd
 ls -la
 
-export DENO_DIR=$BUILD_DIR/.heroku/cache
-$HEROKU_BIN_DIR/deno fetch $BUILD_DIR/app.ts
+
+FETCH_TS=$BUILD_DIR/fetch.ts
+if [ -f $FETCH_TS ]
+then
+  export DENO_DIR=$BUILD_DIR/.heroku/cache
+  $HEROKU_BIN_DIR/deno fetch $FETCH_TS
+fi
 
 echo "end of compile"
 

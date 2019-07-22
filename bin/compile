@@ -21,11 +21,42 @@ echo 'export PATH="$HOME/.heroku/bin:$PATH"' >> $PROFILE_PATH
 echo 'export DENO_DIR="$HOME/.heroku/cache"' >> $PROFILE_PATH
 
 # download dependencies
-FETCH_TS=$BUILD_DIR/fetch.ts
+
+export DENO_DIR=$BUILD_DIR/.heroku/cache
+DENO=$BIN_DIR/deno
+cd $BUILD_DIR
+
+## fetch.ts
+FETCH_TS=fetch.ts
 if [ -f $FETCH_TS ]
 then
-  export DENO_DIR=$BUILD_DIR/.heroku/cache
-  $BIN_DIR/deno fetch $FETCH_TS
+  $DENO fetch $FETCH_TS
 fi
+
+## Procfile
+PROCFILE=Procfile
+if [ -f $PROCFILE ]
+then
+  for WORD in $(cat $PROCFILE)
+  do
+    WORD=${WORD#\"}
+    WORD=${WORD%\"}
+    WORD=${WORD#\'}
+    WORD=${WORD%\'}
+    if [[ "$WORD" =~ (.+)\.(t|j)s ]]
+    then
+      SCRIPT=$WORD
+      set +e
+      echo $SCRIPT
+      $DENO fetch $PROCFILE
+      set -e
+    fi
+  done
+fi
+
+
+
+
+
 
 

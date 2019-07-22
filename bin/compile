@@ -34,25 +34,25 @@ then
 fi
 
 ## Procfile
-PROCFILE=Procfile
-if [ -f $PROCFILE ]
-then
-  for WORD in $(cat $PROCFILE)
-  do
-    WORD=${WORD#\"}
-    WORD=${WORD%\"}
-    WORD=${WORD#\'}
-    WORD=${WORD%\'}
-    if [[ "$WORD" =~ (.+)\.(t|j)s ]]
-    then
-      SCRIPT=$WORD
-      set +e
-      echo $SCRIPT
-      $DENO fetch $PROCFILE
-      set -e
-    fi
-  done
-fi
+#PROCFILE=Procfile
+#if [ -f $PROCFILE ]
+#then
+#  for WORD in $(cat $PROCFILE)
+#  do
+#    WORD=${WORD#\"}
+#    WORD=${WORD%\"}
+#    WORD=${WORD#\'}
+#    WORD=${WORD%\'}
+#    if [[ "$WORD" =~ (.+)\.(t|j)s ]]
+#    then
+#      SCRIPT=$WORD
+#      set +e
+#      echo $SCRIPT
+#      $DENO fetch $PROCFILE
+#      set -e
+#    fi
+#  done
+#fi
 
 
 

@@ -13,6 +13,8 @@ if [ -f runtime.txt ]
 then
   INSTALL_VERSION_OPTION="-s $(cat runtime.txt)"
 fi
+echo $INSTALL_VERSION_OPTION
+
 
 # install deno
 export DENO_DIR=$BUILD_DIR/.heroku

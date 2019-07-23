@@ -8,6 +8,7 @@ $ cat runtime.txt
 v0.12.0
 ```
 
+<!--
 ## Settings to download all dependencies at deployment time
 
 Create `fetch.ts` to your app’s root directory.
@@ -19,6 +20,7 @@ import {} from "./main.ts";
 ```
 
 The downloaded files are cached.
+-->
 
 ## About listen port
 

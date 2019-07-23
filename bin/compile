@@ -27,36 +27,28 @@ DENO=$BIN_DIR/deno
 cd $BUILD_DIR
 
 ## fetch.ts
-FETCH_TS=fetch.ts
-if [ -f $FETCH_TS ]
+if [ -f fetch.ts ]
 then
-  $DENO fetch $FETCH_TS
+  $DENO fetch fetch.ts
 fi
 
 ## Procfile
-#PROCFILE=Procfile
-#if [ -f $PROCFILE ]
-#then
-#  for WORD in $(cat $PROCFILE)
-#  do
-#    WORD=${WORD#\"}
-#    WORD=${WORD%\"}
-#    WORD=${WORD#\'}
-#    WORD=${WORD%\'}
-#    if [[ "$WORD" =~ (.+)\.(t|j)s ]]
-#    then
-#      SCRIPT=$WORD
-#      set +e
-#      echo $SCRIPT
-#      $DENO fetch $PROCFILE
-#      set -e
-#    fi
-#  done
-#fi
-
-
-
-
-
-
+if [ -f Procfile ]
+then
+  for WORD in $(cat Procfile)
+  do
+    WORD=${WORD#\"}
+    WORD=${WORD%\"}
+    WORD=${WORD#\'}
+    WORD=${WORD%\'}
+    if [[ "$WORD" =~ (.+)\.(t|j)s ]]
+    then
+      SCRIPT=$WORD
+      set +e
+      echo $SCRIPT
+      $DENO fetch $SCRIPT
+      set -e
+    fi
+  done
+fi
 

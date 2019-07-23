@@ -1,5 +1,25 @@
 # Heroku Buildpack for Deno
 
+## Specify a Deno Runtime
+
+To specify your Deno version, you also need a `runtime.txt` file - unless you are using the latest Deno runtime version.
+```
+$ cat runtime.txt
+v0.12.0
+```
+
+## Settings to download all dependencies at deployment time
+
+Create `fetch.ts` to your app’s root directory.
+Import the source code that starts the application in `fetch.ts`.
+
+example
+```typescript
+import {} from "./main.ts";
+```
+
+The downloaded files are cached.
+
 ## Getting Started
 
 https://github.com/chibat/heroku-deno-getting-started

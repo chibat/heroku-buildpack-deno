@@ -28,10 +28,6 @@ import {} from "./main.ts";
 The downloaded files are cached.
 -->
 
-## About listen port
-
-Use the environment variable `PORT` provided by the heroku runtime as the port number that the application listen.
-
 ## Getting Started
 
 https://github.com/chibat/heroku-deno-getting-started

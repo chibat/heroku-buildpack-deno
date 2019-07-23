@@ -3,16 +3,20 @@
 
 set -e
 
-#DENO_VERSION=v0.12.0
 BUILD_DIR=${1:-.}
 HEROKU_DIR=$BUILD_DIR/.heroku
 BIN_DIR=$HEROKU_DIR/bin
 
+cd $BUILD_DIR
+
+if [ -f runtime.txt ]
+then
+  INSTALL_VERSION_OPTION="-s $(cat runtime.txt)"
+fi
+
 # install deno
 export DENO_DIR=$BUILD_DIR/.heroku
-curl -fsSL https://deno.land/x/install/install.sh | sh
-# future
-#curl -fsSL https://deno.land/x/install/install.sh | sh -s $DENO_VERSION
+curl -fsSL https://deno.land/x/install/install.sh | sh $INSTALL_VERSION_OPTION
 
 # set environment variables
 PROFILE_PATH="$BUILD_DIR/.profile.d/deno.sh"
@@ -24,7 +28,6 @@ echo 'export DENO_DIR="$HOME/.heroku/cache"' >> $PROFILE_PATH
 
 export DENO_DIR=$BUILD_DIR/.heroku/cache
 DENO=$BIN_DIR/deno
-cd $BUILD_DIR
 
 ## fetch.ts
 if [ -f fetch.ts ]

@@ -1,5 +1,11 @@
 # Heroku Buildpack for Deno
 
+This is the Heroku buildpack for Deno apps.
+
+Web processes must bind to $PORT, and only the HTTP protocol is permitted for incoming connections.
+
+The buildpack parse `Procfile` and download all dependencies at push time.The downloaded files are cached.
+
 ## Specify a Deno Runtime
 
 To specify your Deno version, you also need a `runtime.txt` file - unless you are using the latest Deno runtime version.

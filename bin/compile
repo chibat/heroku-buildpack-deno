@@ -17,7 +17,7 @@ echo $INSTALL_VERSION_OPTION
 
 
 # install deno
-export DENO_DIR=$BUILD_DIR/.heroku
+export DENO_INSTALL=$BUILD_DIR/.heroku
 curl -fsSL https://deno.land/x/install/install.sh | sh $INSTALL_VERSION_OPTION
 
 # set environment variables

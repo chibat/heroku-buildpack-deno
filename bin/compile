@@ -31,12 +31,6 @@ echo 'export DENO_DIR="$HOME/.heroku/cache"' >> $PROFILE_PATH
 export DENO_DIR=$BUILD_DIR/.heroku/cache
 DENO=$BIN_DIR/deno
 
-## fetch.ts
-if [ -f fetch.ts ]
-then
-  $DENO fetch fetch.ts
-fi
-
 ## Procfile
 if [ -f Procfile ]
 then
@@ -51,7 +45,7 @@ then
       SCRIPT=$WORD
       set +e
       echo $SCRIPT
-      $DENO fetch $SCRIPT
+      $DENO cache $SCRIPT
       set -e
     fi
   done

@@ -45,7 +45,7 @@ then
       SCRIPT=$WORD
       set +e
       echo $SCRIPT
-      $DENO cache $SCRIPT
+      $DENO cache --unstable $SCRIPT
       set -e
     fi
   done

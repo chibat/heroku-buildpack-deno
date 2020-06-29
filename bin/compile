@@ -15,7 +15,6 @@ then
 fi
 echo $INSTALL_VERSION_OPTION
 
-
 # install deno
 export DENO_INSTALL=$BUILD_DIR/.heroku
 curl -fsSL https://deno.land/x/install/install.sh | sh $INSTALL_VERSION_OPTION
@@ -27,27 +26,22 @@ echo 'export PATH="$HOME/.heroku/bin:$PATH"' >> $PROFILE_PATH
 echo 'export DENO_DIR="$HOME/.heroku/cache"' >> $PROFILE_PATH
 
 # download dependencies
-
-export DENO_DIR=$BUILD_DIR/.heroku/cache
-DENO=$BIN_DIR/deno
-
-## Procfile
 if [ -f Procfile ]
 then
-  for WORD in $(cat Procfile)
-  do
-    WORD=${WORD#\"}
-    WORD=${WORD%\"}
-    WORD=${WORD#\'}
-    WORD=${WORD%\'}
-    if [[ "$WORD" =~ (.+)\.(t|j)s$ ]]
+  SCRIPT_DIR=$(cd $(dirname $0); pwd)
+  source $SCRIPT_DIR/get_cache_command.sh
+  COMMAND=$(cat Procfile | grep '^web:')
+  if [ -n "$COMMAND" ]
+  then
+    CACHE_COMMAND=$(get_cache_command "$COMMAND")
+    if [ -n "$CACHE_COMMAND" ]
     then
-      SCRIPT=$WORD
+      export DENO_DIR=$BUILD_DIR/.heroku/cache
       set +e
-      echo $SCRIPT
-      $DENO cache --unstable $SCRIPT
+      $BIN_DIR/$CACHE_COMMAND
       set -e
     fi
-  done
+  fi
 fi
+
 

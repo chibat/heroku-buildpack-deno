@@ -31,7 +31,19 @@ function get_cache_command() {
       OPTION_VALUE=on
       continue
     fi
-    if [[ "$WORD" =~ (.+)\.(t|j)sx?(\"|\')?$ ]]
+
+    if [[ "$WORD" =~ --cert=.* ]] \
+      || [[ "$WORD" =~ -c=.* ]] \
+      || [[ "$WORD" =~ --config=.* ]] \
+      || [[ "$WORD" =~ --importmap=.* ]] \
+      || [[ "$WORD" =~ --lock=.* ]] \
+      || [[ "$WORD" =~ --log-level=.* ]]
+    then
+      CACHE_OPTION="$CACHE_OPTION $WORD"
+      continue
+    fi
+
+    if [[ "$WORD" =~ .+\.(t|j)sx?(\"|\')?$ ]]
     then
       SCRIPT=$WORD
       echo "deno cache$CACHE_OPTION $SCRIPT"

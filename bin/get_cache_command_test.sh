@@ -8,6 +8,16 @@ echo "$IN"
 get_cache_command "$IN"
 echo
 
+IN='web: deno run "foo.ts"'
+echo "$IN"
+get_cache_command "$IN"
+echo
+
+IN="web: deno run 'foo.ts'"
+echo "$IN"
+get_cache_command "$IN"
+echo
+
 IN='web: deno run foo.js'
 echo $IN
 get_cache_command "$IN"
@@ -23,7 +33,12 @@ echo $IN
 get_cache_command "$IN"
 echo
 
-IN='web: deno run --allow-env --allow-net=:${PORT} --unstable -c c.json --config config.json --importmap importmap.json "hoge.ts"'
+IN='web: deno run --allow-env --allow-net=:${PORT} --unstable -c c.json --config config.json --importmap importmap.json "foo.ts"'
+echo $IN
+get_cache_command "$IN"
+echo
+
+IN='web: deno run --allow-env --allow-net :${PORT} --unstable -c=c.json --config=config.json --importmap=importmap.json "foo.ts"'
 echo $IN
 get_cache_command "$IN"
 echo

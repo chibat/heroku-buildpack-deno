@@ -30,7 +30,7 @@ if [ -f Procfile ]
 then
   SCRIPT_DIR=$(cd $(dirname $0); pwd)
   source $SCRIPT_DIR/get_cache_command.sh
-  COMMAND=$(cat Procfile | grep '^web:')
+  COMMAND=$(cat Procfile | grep -E '^(web|worker):')
   if [ -n "$COMMAND" ]
   then
     CACHE_COMMAND=$(get_cache_command "$COMMAND")

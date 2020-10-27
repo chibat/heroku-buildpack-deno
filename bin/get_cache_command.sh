@@ -23,7 +23,7 @@ function get_cache_command() {
     if [ "$WORD" = "--cert" \
       -o "$WORD" = "-c" \
       -o "$WORD" = "--config" \
-      -o "$WORD" = "--importmap" \
+      -o "$WORD" = "--import-map" \
       -o "$WORD" = "--lock" \
       -o "$WORD" = "--log-level" ]
     then

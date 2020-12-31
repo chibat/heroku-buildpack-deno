@@ -11,7 +11,7 @@ The buildpack parse `Procfile` and download all dependencies at push time.The do
 To specify your Deno version, you also need a `runtime.txt` file - unless you are using the latest Deno runtime version.
 ```
 $ cat runtime.txt
-v1.5.3
+v1.6.3
 ```
 
 <!--

@@ -1,13 +1,18 @@
 #!/usr/bin/env bash
 # bin/compile <build-dir> <cache-dir> <env-dir>
+# $HOME: /app
 
 set -e
 
 BUILD_DIR=${1:-.}
+CACHE_DIR=${2:-}
+ENV_DIR=${3:-}
+
 HEROKU_DIR=$BUILD_DIR/.heroku
 BIN_DIR=$HEROKU_DIR/bin
 
-cd $BUILD_DIR
+cp -rT $BUILD_DIR $HOME
+cd $HOME
 
 if [ -f runtime.txt ]
 then
@@ -17,6 +22,7 @@ echo $INSTALL_VERSION_OPTION
 
 # install deno
 export DENO_INSTALL=$BUILD_DIR/.heroku
+export DENO_DIR=$BUILD_DIR/.heroku/cache
 curl -fsSL https://deno.land/x/install/install.sh | sh $INSTALL_VERSION_OPTION
 
 # set environment variables
@@ -24,6 +30,8 @@ PROFILE_PATH="$BUILD_DIR/.profile.d/deno.sh"
 mkdir -p $(dirname $PROFILE_PATH)
 echo 'export PATH="$HOME/.heroku/bin:$PATH"' >> $PROFILE_PATH
 echo 'export DENO_DIR="$HOME/.heroku/cache"' >> $PROFILE_PATH
+
+set +e
 
 # download dependencies
 if [ -f Procfile ]
@@ -36,25 +44,17 @@ then
     CACHE_COMMAND=$(get_cache_command "$COMMAND")
     if [ -n "$CACHE_COMMAND" ]
     then
-      export DENO_DIR=$BUILD_DIR/.heroku/cache
-      set +e
       $BIN_DIR/$CACHE_COMMAND
-      set -e
     fi
   fi
 fi
 
 # Aleph.js
-if [ -f aleph.config.ts ]
+if [ -f aleph.config.ts -a -f import_map.json ]
 then
-  echo "aleph.js"
-  set +e
-  $BIN_DIR/deno cache aleph.config.ts
-  if [ -f import_map.json -a -f app.tsx ]
-  then
-    echo "app.tsx"
-    $BIN_DIR/deno cache --import-map import_map.json app.tsx
-  fi
-  set -e
+  ALEPH_PATH=$(jq -r '.imports."aleph/"' import_map.json)
+  $BIN_DIR/deno run --allow-net=deno.land,esm.sh,cdn.esm.sh --allow-read=$HOME,$BUILD_DIR/.heroku --allow-write --allow-env --allow-run ${ALEPH_PATH}cli.ts build
+  $BIN_DIR/deno run --allow-net=deno.land ${ALEPH_PATH}cli.ts start --help > /dev/null
+  cp -rp .aleph $BUILD_DIR/.
 fi
 

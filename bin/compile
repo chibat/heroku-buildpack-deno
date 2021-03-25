@@ -44,4 +44,17 @@ then
   fi
 fi
 
+# Aleph.js
+if [ -f aleph.config.ts ]
+then
+  echo "aleph.js"
+  set +e
+  $BIN_DIR/deno cache aleph.config.ts
+  if [ -f import_map.json -a -f app.tsx ]
+  then
+    echo "app.tsx"
+    $BIN_DIR/deno cache --import-map import_map.json app.tsx
+  fi
+  set -e
+fi
 

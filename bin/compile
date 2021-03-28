@@ -11,6 +11,7 @@ ENV_DIR=${3:-}
 HEROKU_DIR=$BUILD_DIR/.heroku
 BIN_DIR=$HEROKU_DIR/bin
 
+# To enable the local source build cache path, copy the files and match the build path with the startup path.
 cp -rT $BUILD_DIR $HOME
 cd $HOME
 

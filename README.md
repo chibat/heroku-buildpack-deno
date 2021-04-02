@@ -6,6 +6,10 @@ Web processes must bind to `$PORT`, and only the HTTP protocol is permitted for 
 
 The buildpack parse `Procfile` and download all dependencies at push time.The downloaded files are cached.
 
+## Getting Started
+
+https://github.com/chibat/heroku-deno-getting-started
+
 ## Specify a Deno Runtime
 
 To specify your Deno version, you also need a `runtime.txt` file - unless you are using the latest Deno runtime version.
@@ -13,23 +17,19 @@ To specify your Deno version, you also need a `runtime.txt` file - unless you ar
 $ cat runtime.txt
 v1.8.2
 ```
+## Customizing the build process
 
-<!--
-## Settings to download all dependencies at deployment time
+If your app has a build step that you’d like to run when you deploy, write the required processing in `heroku_build.ts`.
 
-Create `fetch.ts` to your app’s root directory.
-Import the source code that starts the application in `fetch.ts`.
-
-example
-```typescript
-import {} from "./main.ts";
+You may be able to avoid the following error by building in advance.
+```
+Error R10 (Boot timeout) -> Web process failed to bind to $PORT within 60 seconds of launch
 ```
 
-The downloaded files are cached.
--->
+[Example](https://github.com/chibat/heroku-deno-getting-started)
 
-## Getting Started
+### Available environment variables
+* `HEROKU_BUILD_DIR`
 
-https://github.com/chibat/heroku-deno-getting-started
 
 

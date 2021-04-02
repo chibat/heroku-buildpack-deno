@@ -26,7 +26,7 @@ You may be able to avoid the following error by building in advance.
 Error R10 (Boot timeout) -> Web process failed to bind to $PORT within 60 seconds of launch
 ```
 
-[Example](https://github.com/chibat/heroku-deno-getting-started)
+[Example](https://github.com/chibat/heroku-deno-customized-build-example)
 
 
 

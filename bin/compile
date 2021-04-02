@@ -12,7 +12,7 @@ HEROKU_DIR=$BUILD_DIR/.heroku
 BIN_DIR=$HEROKU_DIR/bin
 
 # To enable the local source build cache path, copy the files and match the build path with the startup path.
-cp -rT $BUILD_DIR $HOME
+cp -rpT $BUILD_DIR $HOME
 cd $HOME
 
 if [ -f runtime.txt ]
@@ -57,7 +57,7 @@ then
   #
   #export HEROKU_BUILD_DIR="$BUILD_DIR"
   $BIN_DIR/deno run -A --unstable heroku_build.ts
-  cp -rT $HOME $BUILD_DIR
+  cp -rpT $HOME $BUILD_DIR
 elif [ -f aleph.config.ts -a -f import_map.json ]
 then
   #

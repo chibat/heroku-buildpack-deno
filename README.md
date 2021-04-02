@@ -28,8 +28,6 @@ Error R10 (Boot timeout) -> Web process failed to bind to $PORT within 60 second
 
 [Example](https://github.com/chibat/heroku-deno-getting-started)
 
-### Available environment variables
-* `HEROKU_BUILD_DIR`
 
 
 

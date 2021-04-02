@@ -12,7 +12,7 @@ HEROKU_DIR=$BUILD_DIR/.heroku
 BIN_DIR=$HEROKU_DIR/bin
 
 # To enable the local source build cache path, copy the files and match the build path with the startup path.
-cp -rT $BUILD_DIR $HOME
+cp -rpT $BUILD_DIR $HOME
 cd $HOME
 
 if [ -f runtime.txt ]
@@ -50,11 +50,21 @@ then
   fi
 fi
 
-# Aleph.js
-if [ -f aleph.config.ts -a -f import_map.json ]
+if [ -f heroku_build.ts ]
 then
+  #
+  # heroku_build.ts (Customizing the build process)
+  #
+  #export HEROKU_BUILD_DIR="$BUILD_DIR"
+  $BIN_DIR/deno run -A --unstable heroku_build.ts
+  cp -rpT $HOME $BUILD_DIR
+elif [ -f aleph.config.ts -a -f import_map.json ]
+then
+  #
+  # Aleph.js
+  #
   ALEPH_PATH=$(jq -r '.imports."aleph/"' import_map.json)
-  $BIN_DIR/deno run --allow-net=deno.land,esm.sh,cdn.esm.sh --allow-read=$HOME,$BUILD_DIR/.heroku --allow-write --allow-env --allow-run ${ALEPH_PATH}cli.ts build
+  $BIN_DIR/deno run --allow-net --allow-read=$HOME,$BUILD_DIR/.heroku --allow-write --allow-env --allow-run ${ALEPH_PATH}cli.ts build
   $BIN_DIR/deno run --allow-net=deno.land ${ALEPH_PATH}cli.ts start --help > /dev/null
   cp -rp .aleph $BUILD_DIR/.
 fi
